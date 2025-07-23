@@ -25,7 +25,7 @@ const Header: React.FC = () => {
     : [
         // { path: '/dashboard', label: 'Dashboard' },
         { path: '/mood-checkin', label: 'Daily Check-in' },
-        { path: '/report', label: 'Report Concern' },
+        // { path: '/report', label: 'Report Concern' },
         { path: '/chatbot', label: 'AI Support' },
       ];
 

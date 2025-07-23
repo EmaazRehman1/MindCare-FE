@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Heart, Shield, Users, ArrowRight, Star } from 'lucide-react';
+import { Brain, Heart, Shield, Users, ArrowRight } from 'lucide-react';
 
 const LandingPage: React.FC = () => {
   const features = [
@@ -26,26 +26,26 @@ const LandingPage: React.FC = () => {
     }
   ];
 
-  const testimonials = [
-    {
-      name: "Sarah M.",
-      role: "Psychology Student",
-      content: "MindCare helped me track my mood patterns and connect with support when I needed it most.",
-      rating: 5
-    },
-    {
-      name: "David L.",
-      role: "Engineering Student", 
-      content: "The AI chatbot is incredibly helpful for getting quick mental health tips and coping strategies.",
-      rating: 5
-    },
-    {
-      name: "Emma R.",
-      role: "Medical Student",
-      content: "Being able to report concerns anonymously made me feel safe to seek help during a difficult time.",
-      rating: 5
-    }
-  ];
+  // const testimonials = [
+  //   {
+  //     name: "Sarah M.",
+  //     role: "Psychology Student",
+  //     content: "MindCare helped me track my mood patterns and connect with support when I needed it most.",
+  //     rating: 5
+  //   },
+  //   {
+  //     name: "David L.",
+  //     role: "Engineering Student", 
+  //     content: "The AI chatbot is incredibly helpful for getting quick mental health tips and coping strategies.",
+  //     rating: 5
+  //   },
+  //   {
+  //     name: "Emma R.",
+  //     role: "Medical Student",
+  //     content: "Being able to report concerns anonymously made me feel safe to seek help during a difficult time.",
+  //     rating: 5
+  //   }
+  // ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -137,7 +137,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-gray-50 py-20">
+      {/* <section className="bg-gray-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -167,7 +167,7 @@ const LandingPage: React.FC = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="bg-blue-600 py-20">
