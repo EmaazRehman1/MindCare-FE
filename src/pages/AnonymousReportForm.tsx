@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, AlertTriangle, CheckCircle, Eye, EyeOff } from 'lucide-react';
+import { Shield, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import Header from '../components/Header';
 
 const AnonymousReportForm: React.FC = () => {
   const navigate = useNavigate();
@@ -9,7 +10,6 @@ const AnonymousReportForm: React.FC = () => {
   const [description, setDescription] = useState('');
   const [urgency, setUrgency] = useState('medium');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   const concernTypes = [
     'Academic stress',
@@ -32,49 +32,35 @@ const AnonymousReportForm: React.FC = () => {
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!concernType || !description.trim()) return;
+  e.preventDefault();
+  if (!concernType || !description.trim()) return;
 
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setShowSuccess(true);
-    
-    // Redirect after showing success message
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 3000);
-  };
+  setIsSubmitting(true);
+  
+  // Format the initial message for chatbot
+  const urgencyText = {
+    low: "low urgency (can wait)",
+    medium: "medium urgency (should address soon)", 
+    high: "high urgency (needs immediate attention)"
+  }[urgency];
 
-  if (showSuccess) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center max-w-md">
-          <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="h-8 w-8 text-green-600" />
-          </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Report Submitted Successfully</h2>
-          <p className="text-gray-600 mb-4">
-            Thank you for reaching out. Your report has been received and will be reviewed by our mental health team.
-          </p>
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <p className="text-sm text-blue-700">
-              {isAnonymous 
-                ? "Your report was submitted anonymously as requested."
-                : "Our team may reach out to you for follow-up support."
-              }
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const chatbotMessage = `I'm reporting a ${concernType.toLowerCase()} concern. ` +
+  `Here's what I want to share: "${description}". ` +
+  `I consider this to be ${urgencyText}. ` +
+  `${isAnonymous ? "I'd prefer to stay anonymous." : "I'm open to follow-up support."}`;
 
+
+  // Redirect with state
+  navigate('/chatbot', {
+    state: {
+      initialMessage: chatbotMessage
+    },
+    replace: true  // This prevents going back to the form
+  });
+};
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header/>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {/* Header */}
@@ -84,7 +70,7 @@ const AnonymousReportForm: React.FC = () => {
               <h1 className="text-2xl font-semibold text-gray-900">Report a Concern</h1>
             </div>
             <p className="mt-2 text-gray-600">
-              Share any mental health concerns safely and confidentially. Our trained counselors will review your report and provide appropriate support.
+              Share any mental health concerns safely and confidentially. You'll be redirected to our support chatbot after submission.
             </p>
           </div>
 
@@ -223,7 +209,7 @@ const AnonymousReportForm: React.FC = () => {
                     <span>Submitting Report...</span>
                   </div>
                 ) : (
-                  'Submit Report'
+                  'Submit and Chat with Support'
                 )}
               </button>
               

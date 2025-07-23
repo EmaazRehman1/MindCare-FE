@@ -159,13 +159,7 @@ const LoginPage: React.FC = () => {
             </button>
 
             {/* Demo Credentials */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="text-sm font-medium text-gray-900 mb-2">Demo Credentials</h3>
-              <div className="space-y-1 text-xs text-gray-600">
-                <div>Student: student@demo.com / password</div>
-                <div>Admin: admin@demo.com / password</div>
-              </div>
-            </div>
+           
 
             {/* Footer Links */}
             <div className="text-center space-y-2">

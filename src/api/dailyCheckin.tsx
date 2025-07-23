@@ -10,10 +10,11 @@ export const uploadDailyCheckin = async (formData:any)=>{
       },
       body: JSON.stringify(formData),
     });
+    const data= await response.json();
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error(data.message || 'Check-in failed');
     }
-    return await response.json();
+    return data;
   } catch (error) {
     console.error('Error uploading daily check-in:', error);
     throw error;

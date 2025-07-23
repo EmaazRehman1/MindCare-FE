@@ -12,6 +12,7 @@ const MoodCheckinForm: React.FC = () => {
   const [notes, setNotes] = useState('');
   const [sleepHours, setSleepHours] = useState<number>(8);
   const [stressLevel, setStressLevel] = useState<number>(0);
+  const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -25,7 +26,7 @@ const MoodCheckinForm: React.FC = () => {
 
   const stressLevels = [
     'No stress',
-    'Mild stress', 
+    'Mild stress',
     'Moderate stress',
     'High stress',
     'Overwhelming stress'
@@ -34,7 +35,7 @@ const MoodCheckinForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (mood === 0) return;
-    
+
     // Prepare data according to your schema
     const formData = {
       user: user?.id, // Include user ID from auth context
@@ -52,12 +53,21 @@ const MoodCheckinForm: React.FC = () => {
       setTimeout(() => {
         navigate('/chatbot');
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
+      // setError('Failed to submit check-in. Please try again later.');
+      // console.error('Error uploading daily check-in:', error);
+      const message = error.message || 'Failed to submit check-in. Please try again later.';
+      setError(message);
 
-      console.error('Error uploading daily check-in:', error);
       // Handle error (show toast, etc.)
     } finally {
       setIsSubmitting(false);
+      // Reset form state
+      setMood(0);
+      setNotes('');
+      setSleepHours(8);
+      setStressLevel(0);
+      setShowSuccess(false);
     }
   };
 
@@ -79,7 +89,7 @@ const MoodCheckinForm: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header/>
+      <Header />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {/* Header */}
@@ -105,11 +115,10 @@ const MoodCheckinForm: React.FC = () => {
                     key={index}
                     type="button"
                     onClick={() => setMood(index + 1)}
-                    className={`p-4 rounded-lg border-2 transition-all hover:scale-105 ${
-                      mood === index + 1
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    className={`p-4 rounded-lg border-2 transition-all hover:scale-105 ${mood === index + 1
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                      }`}
                   >
                     <div className="text-3xl mb-2">{moodOption.emoji}</div>
                     <div className={`text-sm font-medium ${moodOption.color}`}>
@@ -187,30 +196,42 @@ const MoodCheckinForm: React.FC = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="flex space-x-4">
-              <button
-                type="submit"
-                disabled={mood === 0 || isSubmitting || !notes.trim()}
-                className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Submitting...</span>
+            <div className="flex space-x-4 flex-col">
+              <div className='flex items-center justify-between gap-3'>
+
+                <button
+                  type="submit"
+                  disabled={mood === 0 || isSubmitting || !notes.trim()}
+                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>Submitting...</span>
+                    </div>
+                  ) : (
+                    'Submit Check-in'
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/dashboard')}
+                  className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div>
+
+                {error && (
+                  <div className="text-red-600 bg-red-50 p-3 rounded-lg">
+                    <p className="text-sm">{error}</p>
                   </div>
-                ) : (
-                  'Submit Check-in'
                 )}
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => navigate('/dashboard')}
-                className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
+              </div>
             </div>
+
           </form>
         </div>
       </div>

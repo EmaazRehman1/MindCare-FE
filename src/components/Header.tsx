@@ -5,7 +5,7 @@ import { Brain, LogOut, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 const Header: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,6 +14,7 @@ const Header: React.FC = () => {
     logout();
     navigate('/');
   };
+  const user=JSON.parse(localStorage.getItem('user') || 'null');
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -23,12 +24,12 @@ const Header: React.FC = () => {
       ]
     : [
         // { path: '/dashboard', label: 'Dashboard' },
-        { path: '/mood-checkin', label: 'Mood Check-in' },
-        // { path: '/report', label: 'Report Concern' },
+        { path: '/mood-checkin', label: 'Daily Check-in' },
+        { path: '/report', label: 'Report Concern' },
         { path: '/chatbot', label: 'AI Support' },
       ];
 
-  if (!user) return null;
+  // if (!user) return null;
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
