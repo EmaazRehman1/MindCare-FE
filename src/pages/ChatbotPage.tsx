@@ -14,6 +14,9 @@ interface Message {
 interface ChatbotPageProps {
   initialMessage?: string; // Optional initial message from reported action
 }
+interface User{
+  name:string;
+}
 
 const ChatbotPage: React.FC<ChatbotPageProps> = ({ initialMessage }) => {
   // const [messages, setMessages] = useState<Message[]>([
@@ -24,12 +27,13 @@ const ChatbotPage: React.FC<ChatbotPageProps> = ({ initialMessage }) => {
   //     timestamp: new Date()
   //   },
   // ]);
+  const user :User=JSON.parse(localStorage.getItem('user') || '{}');
   const location = useLocation();
    const [messages, setMessages] = useState<Message[]>(() => {
 
     // Get initial message from location state or use default
-    const initialMsg = "Hello! I'm here to provide mental health support and guidance. How are you feeling today?";
-    
+    const initialMsg = `Hello ${user?.name || 'there'}! I'm here to provide mental health support and guidance. How are you feeling today?`;
+
     return [{
       id: '1',
       content: initialMsg,
@@ -41,11 +45,11 @@ const ChatbotPage: React.FC<ChatbotPageProps> = ({ initialMessage }) => {
   
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const start=useRef<HTMLDivElement>(null);
 
-  // Scroll to bottom when messages change
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [messages]);
+  useEffect(() => {
+    start.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   // If initialMessage changes (passed from props), add it to messages
   useEffect(() => {
@@ -117,6 +121,7 @@ const ChatbotPage: React.FC<ChatbotPageProps> = ({ initialMessage }) => {
   return (
     <div className="h-screen bg-gray-100 flex flex-col">
       {/* Header */}
+      <div ref={start}></div>
       <Header/>
       <div className="bg-white border-b shadow-sm px-6 py-4 w-full flex items-center justify-center">
         <div className="flex items-center space-x-3">
