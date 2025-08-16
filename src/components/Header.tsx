@@ -36,7 +36,7 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/dashboard" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <Brain className="h-8 w-8 text-blue-600" />
             <span className="text-xl font-bold text-gray-900">MindCare</span>
           </Link>
